@@ -20,12 +20,7 @@ Run the following in your terminal:
 ```zsh
 python -i src/lm_score/lm_score.py
 ```
-Now that you are in the python interactive environment, you can run the following to query the example database `company.db`.
-```python
-cursor.execute("""SELECT subject, body,
-LM_SCORE(subject, body, 'Is this an urgent customer complaint?') AS urgency_score
-FROM emails""").fetchall()
-```
+Now that you are in the python interactive environment, you can run one of the examples that is displayed.
 
 ## Experiments
 Use `uv`. Run `uv venv; source .venv/bin/activate; uv sync; time uv run tests/benchmark_lm_score.py`

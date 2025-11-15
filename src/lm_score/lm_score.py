@@ -205,9 +205,6 @@ def get_connection(db_path: str = "company.db") -> sqlite3.Connection:
 
 
 if __name__ == "__main__":
-    import sys
-    from pathlib import Path
-
     parser = argparse.ArgumentParser(
         description="Interactive Python session with LM_SCORE function"
     )
