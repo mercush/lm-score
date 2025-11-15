@@ -52,6 +52,151 @@ class TestLmScore(unittest.TestCase):
         # Should return low score (1-4) for clearly negative content
         self.assertLessEqual(score, 4)
 
+    # Corner case tests
+    def test_lm_score_empty_content(self):
+        """Test lm_score with empty content string."""
+        content = ""
+        question = "Is this about billing?"
+
+        score = lm_score(content, question)
+
+        # Should still return a valid score
+        self.assertIsInstance(score, int)
+        self.assertGreaterEqual(score, 0)
+        self.assertLessEqual(score, 10)
+
+    def test_lm_score_whitespace_content(self):
+        """Test lm_score with only whitespace content."""
+        content = "   \n\t  "
+        question = "Is this urgent?"
+
+        score = lm_score(content, question)
+
+        # Should still return a valid score
+        self.assertIsInstance(score, int)
+        self.assertGreaterEqual(score, 0)
+        self.assertLessEqual(score, 10)
+
+    def test_lm_score_none_values(self):
+        """Test lm_score with None values in content."""
+        subject = "Invoice"
+        body = None
+        question = "Is this about billing?"
+
+        score = lm_score(subject, body, question)
+
+        # Should handle None gracefully and return valid score
+        self.assertIsInstance(score, int)
+        self.assertGreaterEqual(score, 0)
+        self.assertLessEqual(score, 10)
+
+    def test_lm_score_multiple_none_values(self):
+        """Test lm_score with multiple None values."""
+        score = lm_score(None, None, "Is this important?")
+
+        # Should handle multiple None values
+        self.assertIsInstance(score, int)
+        self.assertGreaterEqual(score, 0)
+        self.assertLessEqual(score, 10)
+
+    def test_lm_score_insufficient_arguments(self):
+        """Test lm_score with insufficient arguments."""
+        with self.assertRaises(TypeError):
+            lm_score("only one argument")
+
+    def test_lm_score_no_arguments(self):
+        """Test lm_score with no arguments."""
+        with self.assertRaises(TypeError):
+            lm_score()
+
+    def test_lm_score_very_long_content(self):
+        """Test lm_score with very long content."""
+        content = "This is a test. " * 500  # ~7500 characters
+        question = "Is this repetitive?"
+
+        score = lm_score(content, question)
+
+        # Should handle long content
+        self.assertIsInstance(score, int)
+        self.assertGreaterEqual(score, 0)
+        self.assertLessEqual(score, 10)
+
+    def test_lm_score_special_characters(self):
+        """Test lm_score with special characters and unicode."""
+        content = "Café résumé: $1,000.50 due by 12/31! @user #invoice 💰"
+        question = "Is this about payments?"
+
+        score = lm_score(content, question)
+
+        # Should handle special characters
+        self.assertIsInstance(score, int)
+        self.assertGreaterEqual(score, 0)
+        self.assertLessEqual(score, 10)
+
+    def test_lm_score_numeric_content(self):
+        """Test lm_score with numeric content fields."""
+        amount = 12345
+        customer_id = 67890
+        question = "Is this a large amount?"
+
+        score = lm_score(amount, customer_id, question)
+
+        # Should convert numbers to strings and score
+        self.assertIsInstance(score, int)
+        self.assertGreaterEqual(score, 0)
+        self.assertLessEqual(score, 10)
+
+    def test_lm_score_very_short_content(self):
+        """Test lm_score with minimal content."""
+        content = "Hi"
+        question = "Is this a greeting?"
+
+        score = lm_score(content, question)
+
+        # Should handle very short content
+        self.assertIsInstance(score, int)
+        self.assertGreaterEqual(score, 0)
+        self.assertLessEqual(score, 10)
+
+    def test_lm_score_question_without_question_mark(self):
+        """Test lm_score with question missing question mark."""
+        content = "Please pay your invoice of $100"
+        question = "Is this about billing"  # No question mark
+
+        score = lm_score(content, question)
+
+        # Should still work without question mark
+        self.assertIsInstance(score, int)
+        self.assertGreaterEqual(score, 0)
+        self.assertLessEqual(score, 10)
+
+    def test_lm_score_mixed_content_types(self):
+        """Test lm_score with mixed content types."""
+        content1 = "Subject: Invoice"
+        content2 = 12345
+        content3 = None
+        content4 = True
+        question = "Is this about an invoice?"
+
+        score = lm_score(content1, content2, content3, content4, question)
+
+        # Should handle mixed types
+        self.assertIsInstance(score, int)
+        self.assertGreaterEqual(score, 0)
+        self.assertLessEqual(score, 10)
+
+    def test_lm_score_newlines_and_tabs(self):
+        """Test lm_score with content containing newlines and tabs."""
+        content = "Line 1\n\tLine 2 with tab\n\n\nLine 3 after blank lines"
+        question = "Does this have multiple lines?"
+
+        score = lm_score(content, question)
+
+        # Should handle formatting characters
+        self.assertIsInstance(score, int)
+        self.assertGreaterEqual(score, 0)
+        self.assertLessEqual(score, 10)
+
 
 if __name__ == "__main__":
     unittest.main()

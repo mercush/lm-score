@@ -5,8 +5,6 @@ import sqlite3
 from dotenv import load_dotenv
 import dspy
 import argparse
-from dspy.predict import aggregation
-import statistics
 
 # Load environment variables
 load_dotenv()
@@ -158,7 +156,6 @@ Score:"""
     except Exception as e:
         print(f"Warning: {e}")
         return 5
-    print(response.get_lm_usage())
     return response.answer
 
 def register_lm_score_function(conn: sqlite3.Connection) -> None:
@@ -208,10 +205,45 @@ def get_connection(db_path: str = "company.db") -> sqlite3.Connection:
 
 
 if __name__ == "__main__":
-    print("LM_SCORE module loaded successfully.")
-    print("Use get_connection() to create a database connection with LM_SCORE registered.")
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--cot", description="Whether to use ChainOfThought instead of Prediction")
-    parser.add_argument("--k", description="Number of parallel threads")
+    import sys
+    from pathlib import Path
+
+    parser = argparse.ArgumentParser(
+        description="Interactive Python session with LM_SCORE function"
+    )
+    parser.add_argument(
+        "database",
+        nargs="?",
+        default="company.db",
+        help="Path to SQLite database (default: company.db)"
+    )
+    args = parser.parse_args()
+
+    db_path = args.database
+
+    # Create connection with LM_SCORE registered
+    conn = get_connection(db_path)
+    cursor = conn.cursor()
+
+    print("=" * 70)
+    print("LM_SCORE Interactive Python Session")
+    print("=" * 70)
+    print(f"Database: {db_path}")
+    print("\nAvailable objects:")
+    print("  conn     - SQLite connection with LM_SCORE registered")
+    print("  cursor   - Database cursor for executing queries")
+    print("\nExample usage:")
+    print('  cursor.execute("SELECT * FROM emails LIMIT 3")')
+    print('  for row in cursor: print(row)')
+    print()
+    print('  cursor.execute("""')
+    print('      SELECT subject, LM_SCORE(subject, body, \'Is this urgent?\') as score')
+    print('      FROM emails WHERE score > 7')
+    print('  """)')
+    print('  for row in cursor: print(row)')
+    print()
+    print("Type exit() or Ctrl+D to quit")
+    print("=" * 70)
+    print()
 
 
