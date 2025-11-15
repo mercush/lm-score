@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lm-score"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "dspy>=3.0.4",
+    "matplotlib>=3.10.7",
+    "mlx>=0.29.4",
+    "mlx-lm>=0.28.3",
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+]
+
+[project.scripts]
+lm-score = "lm_score.main:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.1",
+]
