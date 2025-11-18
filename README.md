@@ -36,15 +36,11 @@ Run `uv run python analysis/viz.py` for a visualization of these results.
 ![Benchmark](plot.png)
 
 ## AI tools
-Registering LM_SCORE in SQL.
-
-Created company.db database.
-
-Created docstrings for functions.
-
-Ran benchmarking script.
-
-Visualizing bar plots for benchmarking.
+* Registering LM_SCORE in SQL.
+* Created company.db database.
+* Created docstrings for functions.
+* Benchmarking script.
+* Visualizing bar plots for benchmarking.
 
 
 ## Future steps
