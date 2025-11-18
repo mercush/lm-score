@@ -17,7 +17,7 @@ in .env.
 
 To set up the client, install `uv`.
 1. Run `uv venv && source .venv/bin/activate` 
-2. Once you have the server running, you can run a smoke test to make sure everything is running correctly.
+2. Once you have the server running, you can run a smoke test to make sure everything is working correctly.
 ```
 time uv run tests/benchmark_lm_score.py
 ```
@@ -27,7 +27,7 @@ Run the following in your terminal:
 ```zsh
 uv run python -i src/lm_score/lm_score.py
 ```
-Now that you are in the python interactive environment, you can run one of the examples that is displayed.
+Now that you are in the python interactive environment, you can run one of the examples that is displayed to make SQL queries that utilize the LM_SCORE function that we've defined.
 
 ## Experiments
 Scoring is based on subjective reasonability of answers. I label every score as either "reasonable" or "unreasonable".
