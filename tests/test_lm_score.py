@@ -6,6 +6,45 @@ from lm_score.lm_score import lm_score
 
 class TestLmScore(unittest.TestCase):
     """Tests for lm_score function."""
+    def test_lm_score_meeting_scheduling(self):
+        """Test lm_score with meeting/scheduling content from benchmark."""
+        subject = "Meeting reminder: Q1 Planning"
+        body = "This is a reminder about our Q1 planning meeting scheduled for next Tuesday at 2pm."
+        question = "Is this email about meetings or scheduling?"
+
+        try:
+            score = lm_score(subject, body, question)
+        except Exception as e:
+            print("Make sure the server is running! before running tests!")
+            raise e
+
+        # Should return score > 5 for clearly meeting-related content
+        self.assertGreater(score, 5)
+
+    def test_lm_score_welcome_not_billing(self):
+        """Test lm_score with welcome email that is not about billing."""
+        subject = "Welcome to our service"
+        body = "Thank you for signing up! We're excited to have you on board. Please verify your email address to get started."
+        question = "Is this email about billing or payments?"
+
+        try:
+            score = lm_score(subject, body, question)
+        except Exception as e:
+            print("Make sure the server is running! before running tests!")
+            raise e
+
+        # Should return score < 5 for clearly non-billing content
+        self.assertLess(score, 5)
+
+    def test_lm_score_yes_question(self):
+        """Test lm_score with clearly affirmative content."""
+        content = "Yes, this is definitely about payments and billing."
+        question = "Is this about billing?"
+
+        score = lm_score(content, question)
+
+        # Should return high score (7-10) for clearly affirmative content
+        self.assertGreaterEqual(score, 7)
 
     def test_lm_score_basic(self):
         """Test basic lm_score with content and question."""
@@ -31,26 +70,6 @@ class TestLmScore(unittest.TestCase):
         self.assertIsInstance(score, int)
         self.assertGreaterEqual(score, 1)
         self.assertLessEqual(score, 10)
-
-    def test_lm_score_yes_question(self):
-        """Test lm_score with clearly affirmative content."""
-        content = "Yes, this is definitely about payments and billing."
-        question = "Is this about billing?"
-
-        score = lm_score(content, question)
-
-        # Should return high score (7-10) for clearly affirmative content
-        self.assertGreaterEqual(score, 7)
-
-    def test_lm_score_no_question(self):
-        """Test lm_score with clearly negative content."""
-        content = "This email is about scheduling a meeting for next week."
-        question = "Is this about billing or payments?"
-
-        score = lm_score(content, question)
-
-        # Should return low score (1-4) for clearly negative content
-        self.assertLessEqual(score, 4)
 
     # Corner case tests
     def test_lm_score_empty_content(self):

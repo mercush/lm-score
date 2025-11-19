@@ -9,12 +9,15 @@ import argparse
 # Load environment variables
 load_dotenv()
 
-SERVER_URL = os.getenv("SERVER_URL", "http://localhost:8080")
-API_TOKEN = os.getenv("API_TOKEN", "")
+SERVER_URL = os.environ["SERVER_URL"]
+API_TOKEN = os.environ["API_TOKEN"]
+MODEL = os.environ["MODEL"]
+ENSEMBLE = os.environ["ENSEMBLE"] == "t"
+AGGREGATION = os.environ["AGGREGATION"]
 
 # Configure DSPy
 lm = dspy.LM(
-    model="openai/mlx-community/DeepSeek-R1-Distill-Qwen-7B-4bit",
+    model=MODEL,
     api_base=SERVER_URL,
     api_key=API_TOKEN,
     max_tokens=2000,
@@ -48,14 +51,17 @@ class LMScorer(dspy.Module):
         Returns:
             Integer score from the language model
         """
-        response = self.predictor(question=question)
+        try:
+            response = self.predictor(question=question)
+        except Exception:
+            return dspy.Prediction(answer=5)
         return response
 
 class EnsembleScorer(dspy.Module):
     """Ensemble LM scorer with majority voting across multiple predictions.
 
     This scorer makes k independent predictions and returns the most common result
-    (mode) to improve reliability. If predictions fail, they default to a neutral
+    (maj) to improve reliability. If predictions fail, they default to a neutral
     score of 5. This approach provides more robust results at the cost of increased
     latency and API calls.
 
@@ -83,7 +89,7 @@ class EnsembleScorer(dspy.Module):
         """Score content using ensemble majority voting.
 
         Makes k independent predictions and returns the most frequently occurring
-        score (mode). Failed predictions default to a neutral score of 5.
+        score (maj). Failed predictions default to a neutral score of 5.
 
         Args:
             question: A yes/no question with scoring instructions
@@ -99,11 +105,13 @@ class EnsembleScorer(dspy.Module):
                 
             except Exception:
                 scores.append(5)
-        return dspy.Prediction(answer=sum(scores) // self.k)
-        # return dspy.Prediction(answer=max(set(scores), key=scores.count))
+        if AGGREGATION == "avg":
+            return dspy.Prediction(answer=sum(scores) // self.k)
+        else:
+            return dspy.Prediction(answer=max(set(scores), key=scores.count))
 
 # Use ensemble scorer with 3 parallel predictions
-lm_scorer = LMScorer()
+lm_scorer = EnsembleScorer() if ENSEMBLE else LMScorer()
 
 def lm_score(*args) -> int:
     """Score content based on a yes/no question using a language model.
@@ -136,7 +144,7 @@ def lm_score(*args) -> int:
     content_parts = args[:-1]
 
     # Combine content parts
-    content = " ".join(str(part) for part in content_parts if part is not None)
+    content = "\n".join(content_parts)
 
     prompt = f"""Based on the following content, answer this yes/no question: {question}
 
@@ -151,7 +159,7 @@ Provide a score from 0 to 10 based on your confidence in the answer:
 
 Provide only a single number from 0 to 10.
 Score:"""
-    try: 
+    try:
         response = lm_scorer(question=prompt)
     except Exception as e:
         print(f"Warning: {e}")
@@ -203,13 +211,12 @@ def get_connection(db_path: str = "company.db") -> sqlite3.Connection:
     register_lm_score_function(conn)
     return conn
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Interactive Python session with LM_SCORE function"
     )
     parser.add_argument(
-        "database",
+        "--database",
         nargs="?",
         default="company.db",
         help="Path to SQLite database (default: company.db)"
