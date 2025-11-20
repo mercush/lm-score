@@ -3,7 +3,7 @@ For running the server locally, simply run
 ```zsh
 source src/server/server.sh
 ```
-on Mac.
+Note: this only works on Mac because it uses GPU acceleration via MLX.
 
 To set up the client, 
 1. Install `uv` with `curl -LsSf https://astral.sh/uv/install.sh | sh`
