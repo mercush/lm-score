@@ -9,11 +9,11 @@ echo "THINKING: $THINKING"
 # Check THINKING variable from environment
 if [ "$THINKING" = "t" ]; then
     mlx_lm.server \
-        --model "mlx-community/DeepSeek-R1-Distill-Qwen-7B-4bit" \
+        --model "$MODEL" \
         --max-tokens 4000
 else
     mlx_lm.server \
-        --model "mlx-community/DeepSeek-R1-Distill-Qwen-7B-4bit" \
+        --model "$MODEL" \
         --max-tokens 4000 \
         --chat-template "$(cat src/server/chat.template)"
 fi
