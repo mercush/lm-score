@@ -7,7 +7,7 @@
 * Alternate designs
 * Benchmarking
 ## Goal
-The goal of this project is to extend SQL with a python function `LM_SCORE` that 
+The goal of this project is to extend SQL with a Python function `LM_SCORE` that 
 * takes in at least 2 arguments. If _n_ arguments are passed in, the first _n-1_ arguments are the contents to be scored, and the last argument is a yes-or-no question.
 * returns an integer between 0 and 10, where 0 is _no_ and 10 is _yes_.
 Example usage:
