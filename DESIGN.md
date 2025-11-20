@@ -51,7 +51,7 @@ By default, the server runs locally with `mlx_lm.server` and `mlx-community/Deep
 ## Efficiency
 * **Compute**: FLOPs scale quadratically with the number of contents passed into `LM_SCORE`.
 * **Latency**: If `ENSEMBLE` is enabled, the primary bottleneck is the sequential execution of ensemble queries. Since `mlx_lm.server` is currently treated as a synchronous endpoint in this implementation, enabling `ENSEMBLE` results in roughly 3x the latency of a single call.
-* **Token Usage**: Reduced significantly when `THINKING` is disabled. When `THINKING` is enabled, output cost and latency increase significantly due to the generation of chain-of-thought tokens.
+* **Token Usage**: Reduced significantly when `THINKING` is disabled. When `THINKING` is enabled, output cost and latency increase due to the generation of chain-of-thought tokens.
 * **Caching**: Caching is currently disabled (`cache=False`) to ensure independent samples for the ensemble and accurate benchmarking, meaning every `LM_SCORE` call incurs a full model inference cost. However, this can easily be turned on and would yield a speedup.
 
 ## Alternate designs
