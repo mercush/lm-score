@@ -14,7 +14,7 @@ Run the following in your terminal:
 ```zsh
 uv run python -i src/lm_score/lm_score.py --database company.db
 ```
-Now that you are in the python interactive environment, you can run one of the examples displayed to make SQL queries that utilize the `LM_SCORE` function that we've defined. If you would like to use your own SQL database, pass its path into the command line in place of `company.db`.
+Now that you are in the python interactive environment, you can run one of the examples displayed to make SQL queries that utilize the `LM_SCORE` function. If you would like to use your own SQL database, pass its path into the command line in place of `company.db`.
 ### Configuration
 Set the config in `.env` (`AGGREGATION`, `ENSEMBLE`, `THINKING`)
 * `ENSEMBLE`: Whether or not to make multiple LM queries and aggregate the output with the method defined in `AGGREGATION` (either "t" or "f")
