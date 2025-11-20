@@ -73,4 +73,4 @@ By default, the server runs locally with `mlx_lm.server` and `mlx-community/Deep
 Benchmarking details are included in [BENCHMARK.md](BENCHMARK.md)
 
 ## Error handling
-Reasonably often, the LM will give an output that does not conform to the DSPy format so we need to handle this case. In the cases where the LM fails to output in the correct format, LM_SCORE will output 5.
+Reasonably often, the LM will give an output that does not conform to the DSPy format so we need to handle this case. In the cases where the LM fails to output in the correct format, `LM_SCORE` will output 5.
