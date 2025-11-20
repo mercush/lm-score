@@ -1,6 +1,6 @@
 # Setup
 Make sure you read the `DESIGN.md` file first. To run the benchmark, make sure you have installed uv and have activated the virtual environment. Then, 
-run `cp .env.example .env` and then plug in the appropriate environment variables in `.env`. See the Configuration section in `README.md` to see how to set the `ENSEMBLE`, `AGGREGATION`, `THINKING`, `SERVER_URL`, `API_TOKEN`, and `MODEL` variables. To run the benchmark, simply run
+run `cp .env.example .env` and then plug in the appropriate environment variables in `.env`. See the Configuration section in `README.md` to see how to set the appropriate variables. To run the benchmark, simply run
 ```zsh
 time uv run tests/benchmark_lm_score.py --prefix run1
 ```
