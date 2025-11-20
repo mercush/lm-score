@@ -7,7 +7,7 @@ time uv run tests/benchmark_lm_score.py --prefix run1
 # Experimental design
 We use the 30 rows from the `company.db` database as a benchmark. The database has 3 tables "EMAILS", "INVOICES", and "SALES_LEADS". Each table has 10 rows. Each set of 5 rows is assigned a question that is asked in the `LM_SCORE` function. 
 
-Scoring is based on the reasonability of answers. I evaluated each table in the database myself and with an LM-as-judge (GPT-5 via the API). 
+Scoring is based on the reasonability of answers. I evaluated `LM_SCORE` output myself and with an LM-as-judge (GPT-5 via the API). 
 
 Results below are based on just a single run of the dataset. Consequently, the standard error does not factor in the variance of the LM's outputs when being made the same query multiple times.
 ## Head of email table in database
