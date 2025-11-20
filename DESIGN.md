@@ -46,7 +46,7 @@ By default, the server runs locally with `mlx_lm.server` and `mlx-community/Deep
 ## Configurations
 * `ENSEMBLE`: Whether to use ensemble scoring (t) or not (f)
 * `AGGREGATION`: Whether to use majority voting (`maj`) or average (`avg`) for ensembling
-* `THINKING`: Whether to allow the LM to think (t) or whether to suppress the tokens by coercing the LM to start with `<think>Okay, I think I have finished thinking</think>` via the chat template, which has been shown the dramatically [lower token usage and marginally decrease performance](https://arxiv.org/abs/2504.09858).
+* `THINKING`: Whether to allow the LM to think (t) or whether to suppress the tokens by coercing the LM to start with `<think>Okay, I think I have finished thinking</think>` via the chat template, which has been shown to dramatically [lower token usage and marginally decrease performance](https://arxiv.org/abs/2504.09858). Note that to change this variable, you will have to restart the server.
 
 ## Efficiency
 * **Compute**: FLOPs scale quadratically with the number of contents passed into `LM_SCORE`.
