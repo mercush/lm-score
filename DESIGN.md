@@ -62,7 +62,7 @@ By default, the server runs locally with `mlx_lm.server` and `mlx-community/Deep
     - This will not yield lower token usage, but will lower the latency
 - Dispatching a separate LM call for each content passed into `LM_SCORE` asynchronously
     - The asynchronous dispatch will lower latency
-    - Breaking the content into multiple LM calls will also lower the cost (time/usage) cost associated with prefill
+    - Breaking the content into multiple LM calls will also lower the compute cost associated with prefill
     - The problem here is that independence assumptions are made that are not true in practice. For instance
     ```python
     LM_SCORE("Weekly invoice 12/12/2022", "$14,000", "Is my invoice greater than $5,000?")
