@@ -1,6 +1,8 @@
 # LM_SCORE
 This project extends SQL with a function `LM_SCORE` that answers yes/no questions by outputting a number between 0 (which denotes no) and 10 (which denotes yes). For more details on how to use `LM_SCORE` and its design, please see `DESIGN.md`.
 ## Quickstart
+Start by running `cp .env.example .env` to create a `.env` file.
+
 For running the server locally, simply run 
 ```zsh
 source src/server/server.sh
